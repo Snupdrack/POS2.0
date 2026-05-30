@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Separator } from '@/components/ui/separator'
 import { formatMXN } from '@/lib/utils'
 import { X, Plus, Minus, ShoppingCart, Phone, MapPin, Clock, ChevronUp, MessageCircle } from 'lucide-react'
+import { categories as localCategories, products as localProducts } from '@/lib/menu-data'
 
 const FOOTER = `© 2026 Nito's Pizza. Todos los derechos reservados. Hecho con amor en Oaxaca, México. Diseño y Software por SynkData`
 const WHATSAPP = '+5219514618850'
@@ -50,14 +51,45 @@ export default function DigitalMenu() {
   const fetchCategories = async () => {
     try {
       const res = await fetch('/api/categories')
+      if (!res.ok) throw new Error('API error')
       const data = await res.json()
-      setCategories(data)
-      if (data.length > 0) setActiveCategory(data[0].id)
+      if (data && data.length > 0) {
+        setCategories(data)
+        setActiveCategory(data[0].id)
+        setLoading(false)
+        return
+      }
     } catch (err) {
-      console.error('Error fetching categories:', err)
-    } finally {
-      setLoading(false)
+      console.error('Error fetching categories from API, using local data:', err)
     }
+    
+    // Fallback: usar datos locales
+    const transformedCategories: Category[] = localCategories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      icon: cat.emoji,
+      products: localProducts
+        .filter(p => p.category === cat.id)
+        .map(p => ({
+          id: p.id,
+          name: p.name,
+          description: p.description || '',
+          price: p.price,
+          image: p.emoji,
+          featured: p.featured || false,
+          popular: p.popular || false,
+          isAvailable: true,
+          variants: [],
+          categoryId: cat.id,
+          category: { name: cat.name, icon: cat.emoji }
+        }))
+    }))
+    
+    setCategories(transformedCategories)
+    if (transformedCategories.length > 0) {
+      setActiveCategory(transformedCategories[0].id)
+    }
+    setLoading(false)
   }
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
