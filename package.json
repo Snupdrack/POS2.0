@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "NitoPOS - Sistema de Punto de Venta, Menú Digital y Dashboard para Restaurantes",
+  "type": "module",
   "scripts": {
     "dev": "next dev -p ${PORT:-3000} -H 0.0.0.0",
     "build": "next build",
-    "start": "NODE_ENV=production node server.ts",
+    "start": "NODE_ENV=production tsx server.ts",
     "start:next": "next start -p ${PORT:-3000} -H 0.0.0.0",
     "lint": "eslint .",
     "db:push": "prisma db push",
@@ -104,3 +105,4 @@
     "typescript": "^5"
   }
 }
+
