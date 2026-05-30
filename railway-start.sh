@@ -44,6 +44,10 @@ if [ "$SEED_NEEDED" = "2" ]; then
   npx tsx prisma/seed.ts
 fi
 
-# Iniciar el servidor (custom server con Socket.io integrado)
-echo "Iniciando servidor en 0.0.0.0:\${PORT:-3000}..."
-exec node server.ts
+# Compilar Next.js y Tailwind CSS para producción antes del inicio
+echo "Compilando aplicación para producción (Next.js & Tailwind)..."
+npx next build
+
+# Iniciar el servidor personalizado con soporte TypeScript integrado
+echo "Iniciando servidor en 0.0.0.0:${PORT:-3000}..."
+exec npx tsx server.ts
