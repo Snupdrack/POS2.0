@@ -16,7 +16,6 @@ import {
   Truck,
   UtensilsCrossed,
   Heart,
-  MessageCircle,
   Facebook,
 } from 'lucide-react';
 import { categories, products, formatPrice, featuredProducts } from '@/lib/menu-data';
@@ -68,14 +67,15 @@ export default function LandingSection() {
                   Ver Men&uacute; Completo
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-                <Button
-                  size="lg"
-                  className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-semibold text-lg px-8 py-6 rounded-full border border-white/30"
-                  onClick={() => setActiveSection('reservar')}
-                >
-                  <CalendarCheck className="mr-2 w-5 h-5" />
-                  Reservar Mesa
-                </Button>
+                <a href="https://wa.me/5219514618850" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="lg"
+                    className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-semibold text-lg px-8 py-6 rounded-full border border-white/30"
+                  >
+                    <CalendarCheck className="mr-2 w-5 h-5" />
+                    Pedir por WhatsApp
+                  </Button>
+                </a>
               </div>
 
               <div className="mt-8 flex flex-wrap items-center lg:justify-start justify-center gap-6 text-white/80 text-sm">
@@ -368,10 +368,10 @@ export default function LandingSection() {
                 <Button
                   size="lg"
                   className="bg-[#FE4F04] hover:bg-[#C73D00] text-white font-bold text-lg px-8 py-6 rounded-full shadow-xl"
-                  onClick={() => setActiveSection('reservar')}
+                  onClick={() => setActiveSection('menu')}
                 >
                   <CalendarCheck className="mr-2 w-5 h-5" />
-                  Reservar Mesa Ahora
+                  Pedir Ahora
                 </Button>
               </div>
             </div>
@@ -395,10 +395,7 @@ export default function LandingSection() {
                 La pizza artesanal que conquist&oacute; el coraz&oacute;n de Oaxaca. Masa hecha al momento, ingredientes frescos y el sabor que te hace volver.
               </p>
               <div className="flex items-center gap-3">
-                <a href="https://wa.me/5219514618850" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 hover:bg-green-600 flex items-center justify-center transition-colors" title="WhatsApp">
-                  <MessageCircle className="w-5 h-5" />
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=100086304049257" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 hover:bg-blue-600 flex items-center justify-center transition-colors" title="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=100086304049257" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#FE4F04] flex items-center justify-center transition-colors" title="Facebook">
                   <Facebook className="w-5 h-5" />
                 </a>
               </div>
@@ -429,10 +426,14 @@ export default function LandingSection() {
                   <MapPin className="w-5 h-5 text-[#FE4F04] shrink-0" />
                   <span>Crta. Crist&oacute;bal Col&oacute;n km 30.1, Tlacolula de Matamoros, Oaxaca</span>
                 </div>
-                <div className="flex items-center gap-3">
+                <a href="tel:+529517250827" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
                   <Phone className="w-5 h-5 text-[#FE4F04] shrink-0" />
                   <span>(951) 725-0827</span>
-                </div>
+                </a>
+                <a href="https://wa.me/5219514618850" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-400 hover:text-green-400 transition-colors">
+                  <span className="text-[#FE4F04]">📱</span>
+                  <span>WhatsApp: (951) 461-8850</span>
+                </a>
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-[#FE4F04] shrink-0" />
                   <span>Delivery disponible hasta las 22:00</span>
