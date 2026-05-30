@@ -17,7 +17,6 @@
     "db:seed": "bunx tsx prisma/seed.ts",
     "db:setup": "prisma db push && bunx tsx prisma/seed.ts",
     "postinstall": "prisma generate"
-    
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -103,4 +102,3 @@
     "typescript": "^5"
   }
 }
-
