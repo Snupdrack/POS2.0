@@ -1,5 +1,5 @@
 [build]
-builder = "heroku/bun"
+builder = "RAILPACK"
 watchPattern = "src/**"
 
 [deploy]
