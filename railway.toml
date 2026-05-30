@@ -3,7 +3,7 @@ builder = "RAILPACK"
 watchPattern = "src/**"
 
 [deploy]
-startCommand = "npx prisma db push && npm run start"
+startCommand = "npx prisma generate && npx prisma db push --skip-generate && npm run db:seed && npm run start"
 healthcheckPath = "/api/auth/session"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
