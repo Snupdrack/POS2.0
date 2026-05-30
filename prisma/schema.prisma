@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("CAJA") // ADMIN, CAJA, KITCHEN
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  icon      String   @default("🍕")
+  sortOrder Int      @default(0)
+  active    Boolean  @default(true)
+  products  Product[]
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String      @default("")
+  price       Float
+  imageUrl    String?
+  image       String      @default("🍕")
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+  active      Boolean     @default(true)
+  featured    Boolean     @default(false)
+  popular     Boolean     @default(false)
+  isAvailable Boolean     @default(true)
+  variants    Variant[]
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+}
+
+model Variant {
+  id         String  @id @default(cuid())
+  productId  String
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name       String
+  extraPrice Float   @default(0)
+}
+
+model Table {
+  id       String @id @default(cuid())
+  number   Int    @unique
+  qrCode   String?
+  capacity Int    @default(4)
+  status   String @default("AVAILABLE") // AVAILABLE, OCCUPIED, RESERVED, MAINTENANCE
+  area     String @default("INDOOR") // INDOOR, OUTDOOR, TERRACE, BAR
+  reservations Reservation[]
+}
+
+model Reservation {
+  id           String   @id @default(cuid())
+  customerName String
+  customerPhone String
+  customerEmail String?
+  date         String
+  time         String
+  guests       Int
+  tableId      String?
+  table        Table?   @relation(fields: [tableId], references: [id])
+  status       String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED, NO_SHOW, COMPLETED
+  notes        String?
+  depositPaid  Boolean  @default(false)
+  depositAmount Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   Int         @unique
+  type          String      @default("LOCAL") // LOCAL, DELIVERY, TAKEOUT
+  status        String      @default("PENDING") // PENDING, CONFIRMED, PREPARING, READY, DELIVERED, CANCELLED, CANCEL_REQUESTED
+  customerName  String?
+  customerPhone String?
+  customerEmail String?
+  address       String?
+  notes         String?
+  total         Float
+  discount      Float       @default(0)
+  tax           Float       @default(0)
+  tip           Float       @default(0)
+  tableId       String?
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+  paymentMethod String?     @default("CASH") // CASH, CARD, TRANSFER, ONLINE
+  paymentStatus String?     @default("PENDING") // PENDING, PAID, FAILED, REFUNDED
+  paymentRef    String?
+  deliveryZone  String?
+  deliveryFee   Float       @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+  variants  String?
+  notes     String?
+}
+
+model Business {
+  id          String @id @default(cuid())
+  name        String
+  phone       String
+  whatsapp    String
+  address     String
+  facebook    String?
+  hours       String
+  promo       String?
+  deliveryFee Float?
+  minOrder    Float?
+  taxRate     Float  @default(0.16)
+  logoUrl     String?
+}
+
+model DeliveryZone {
+  id        String @id @default(cuid())
+  name      String
+  fee       Float
+  estimatedMinutes Int @default(30)
+  active    Boolean @default(true)
+}
